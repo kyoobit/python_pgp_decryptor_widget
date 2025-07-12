@@ -1,41 +1,41 @@
 # Makefile for Python dearmor widget
 # https://www.gnu.org/software/make/manual/make.html
 SHELL := /bin/sh
-VENV = venv
+VENV = .venv
 VENV_BIN = ./$(VENV)/bin
 
 install: requirements-ci.txt ## Install the application requirements
-	# Use `python3` from the current environment to create a virtual environment
-	python3 -m venv $(VENV)
-	# Upgrade PIP in the virtual environment
-	$(VENV_BIN)/python -m pip install --upgrade pip
-	# Install the Python requirements in the virtual environment
+	# Install `uv' 
+	uv --version || curl -LsSf https://astral.sh/uv/install.sh | sh
+	# Install the Python requirements using uv in a virtual environment
 	# CI requirements-ci.txt file includes dependencies for format, lint, and test
-	$(VENV_BIN)/python -m pip install -r requirements-ci.txt
+	uv add --upgrade --requirements requirements-ci.txt --dev
 
 format: ## (Re)Format the application files
-	$(VENV_BIN)/black *.py
+	uv run black *.py
 
 lint: ## Lint the application files
 	# Lint the application files
 	# Ignore anti-pattern E266 too many leading '#' because, just because
 	# Ignore [anti-]pattern W503 Line break occurred before a binary operator, trust black
-	$(VENV_BIN)/flake8 --max-line-length 127 *.py --ignore=E266,W503
+	# Ignore [anti-]pattern W293 blank line contains whitespace, part of the content
+	uv run flake8 --max-line-length 127 *.py --ignore=E266,W503,W293
+	uv run ruff check *.py
 
 test: ## Test the application
-	# Test the application
-	$(VENV_BIN)/coverage run -m pytest -v *.py
+	# Test the application (PGP_KEY_PASSPHRASE needed in environment variables)
+	uv run coverage run -m pytest -v test_dearmor.py
 	# Report code coverage
-	$(VENV_BIN)/coverage report -m
+	uv run coverage report -m
 
 depcheck: ## Dependency check for known vulnarbilities
 	# Perform a scan of dependancies backed by the OSS Index
-	$(VENV_BIN)/jake --warn-only ddt
+	uv run jake --warn-only ddt
 
 secscan: ## Run a source code security analyzer
 	# Analyze the application files
 	# Ignore B101 Use of assert detected, due to laziness of putting tests in the same file
-	$(VENV_BIN)/bandit --recursive *.py --skip B101
+	uv run bandit --recursive *.py --skip B101
 
 all: install lint test depcheck secscan
 
