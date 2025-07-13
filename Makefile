@@ -1,4 +1,4 @@
-# Makefile for Python dearmor widget
+# Makefile for Python PGP Decryptor Widget
 # https://www.gnu.org/software/make/manual/make.html
 SHELL := /bin/sh
 VENV = .venv
@@ -24,7 +24,7 @@ lint: ## Lint the application files
 
 test: ## Test the application
 	# Test the application (PGP_KEY_PASSPHRASE needed in environment variables)
-	uv run coverage run -m pytest -v test_dearmor.py
+	uv run coverage run -m pytest -v test_pgp_decryptor.py
 	# Report code coverage
 	uv run coverage report -m
 

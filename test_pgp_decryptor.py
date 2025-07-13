@@ -3,9 +3,9 @@ import os
 
 import pytest
 
-from dearmor import decrypt_pgp_message
-from dearmor import decrypt
-from dearmor import get_arguments
+from pgp_decryptor import decrypt_pgp_message
+from pgp_decryptor import decrypt
+from pgp_decryptor import get_arguments
 
 
 PASSPHRASE = os.environ.get("PGP_KEY_PASSPHRASE")

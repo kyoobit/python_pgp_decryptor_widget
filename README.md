@@ -1,8 +1,8 @@
-# Python Dearmor Widget
+# Python PGP Decryptor Widget
 
 A silly widget to handle encryption/decryption of sensitive values in text files.
 
-# Use the Dearmor Widget
+# Use the Decryptor Widget
 
 Install `uv`:
 ```shell
@@ -16,18 +16,18 @@ uv add --upgrade --requirements requirements.txt
 
 Alias the program:
 ```shell
-alias dearmor='uv run --project $HOME/repos/python/python_dearmor_widget \
-  $HOME/repos/python/python_dearmor_widget/dearmor.py $*';
+alias pgp_decryptor='uv run --project $HOME/repos/python/python_pgp_decryptor_widget \
+  $HOME/repos/python/python_pgp_decryptor_widget/pgp_decryptor.py $*';
 ```
 
 Run the program:
 ```shell
-dearmor --help
+pgp_decryptor --help
 ```
 
 Example usage:
 ```shell
-% sdiff secrets.yaml <(PGP_KEY_PASSPHRASE='<PASSPHRASE>' dearmor -i secrets.yaml)
+% sdiff secrets.yaml <(PGP_KEY_PASSPHRASE='<PASSPHRASE>' pgp_decryptor -i secrets.yaml)
 ---                                                             ---
 # secrets.yaml                                                  # secrets.yaml
 apiVersion: v1                                                  apiVersion: v1
@@ -66,7 +66,7 @@ uv add --upgrade --requirements requirements-ci.txt --dev
 Manual test run:
 ```shell
 export PGP_KEY_PASSPHRASE='<YOUR PGP KEY PASSPHRASE>'
-uv run coverage run -m pytest -v test_dearmor.py
+uv run coverage run -m pytest -v test_pgp_decryptor.py
 uv run coverage report -m
-uv run ruff check dearmor.py
+uv run ruff check pgp_decryptor.py
 ```
