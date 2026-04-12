@@ -1,7 +1,7 @@
 [project]
 name = "python-dearmor-widget"
 version = "0.1.0"
-description = "Add your description here"
+description = "A silly widget to handle encryption/decryption of sensitive values in text files."
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
